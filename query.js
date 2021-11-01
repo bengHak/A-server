@@ -11,3 +11,5 @@ exports.INSERT_USER = `INSERT INTO users (email, password, username, blog_title,
 exports.UPDATE_USER_USERNAME = `UPDATE users SET username = ? WHERE id = ?`;
 
 exports.UPDATE_USER_BLOG_TITLE = `UPDATE users SET blog_title = ? WHERE id = ?`;
+
+exports.SELECT_POSTS_ORDERBY_CREATED_AT_PAGINATION = `SELECT * FROM posts ORDER BY created_at DESC LIMIT ?, ?`;
