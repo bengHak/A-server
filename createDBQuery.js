@@ -1,9 +1,12 @@
 const createUserTable = `CREATE TABLE IF NOT EXISTS users (
   id INT NOT NULL AUTO_INCREMENT,
+  email VARCHAR(255) NOT NULL,
   username VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   blog_title VARCHAR(255) NOT NULL,
-  create_at DATETIME NOT NULL,
+  profile_image_path VARCHAR(255) NOT NULL,
+  blog_image_path VARCHAR(255) NOT NULL,
+  created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   PRIMARY KEY (id)
 )`;
@@ -12,7 +15,7 @@ const createPostTable = `CREATE TABLE IF NOT EXISTS posts (
   id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(255) NOT NULL,
   content TEXT NOT NULL,
-  create_at DATETIME NOT NULL,
+  created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   user_id INT NOT NULL,
   PRIMARY KEY (id),
@@ -22,11 +25,10 @@ const createPostTable = `CREATE TABLE IF NOT EXISTS posts (
 const createCommentTable = `CREATE TABLE IF NOT EXISTS comments (
   id INT NOT NULL AUTO_INCREMENT,
   content TEXT NOT NULL,
-  create_at DATETIME NOT NULL,
+  created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   post_id INT NOT NULL,
   user_id INT NOT NULL,
-  create_at DATETIME NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (post_id) REFERENCES posts(id),
   FOREIGN KEY (user_id) REFERENCES users(id)
@@ -36,18 +38,18 @@ const createLikeTable = `CREATE TABLE IF NOT EXISTS likes (
   id INT NOT NULL AUTO_INCREMENT,
   post_id INT NOT NULL,
   user_id INT NOT NULL,
-  create_at DATETIME NOT NULL,
+  created_at DATETIME NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (post_id) REFERENCES posts(id),
   FOREIGN KEY (user_id) REFERENCES users(id)
 )`;
 
-const createImagePathTable = `CREATE TABLE IF NOT EXISTS image_paths (
+const createPostImagePathTable = `CREATE TABLE IF NOT EXISTS post_image (
   id INT NOT NULL AUTO_INCREMENT,
   path VARCHAR(255) NOT NULL,
   post_id INT NOT NULL,
   image_order INT NOT NULL,
-  create_at DATETIME NOT NULL,
+  created_at DATETIME NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (post_id) REFERENCES posts(id)
 )`;
@@ -57,7 +59,7 @@ const queries = [
     createPostTable,
     createCommentTable,
     createLikeTable,
-    createImagePathTable,
+    createPostImagePathTable,
 ];
 
 const mysql = require("mysql2");
