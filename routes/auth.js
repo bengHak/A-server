@@ -1,8 +1,8 @@
 var express = require("express");
 var router = express.Router();
+var auth = require("../controller/AuthController");
 
-router.get("/", function (req, res, next) {
-    res.json("auth router");
-});
+router.post("/signup", auth.signUpAPI);
+router.post("/signin", auth.signInAPI);
 
 module.exports = router;
