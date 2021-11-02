@@ -69,3 +69,16 @@ exports.signInAPI = async (req, res) => {
         res.status(400).json({ msg: "signin error" });
     }
 };
+
+exports.verifyTokenAPI = async (req, res) => {
+    try {
+        if (res.user_id !== undefined) {
+            res.status(200).json({ msg: "verify success" });
+        } else {
+            res.status(400).json({ msg: "verify failed" });
+        }
+    } catch (e) {
+        console.log(`verify e : ${e}`);
+        res.status(400).json({ msg: "verify error" });
+    }
+};

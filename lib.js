@@ -26,6 +26,7 @@ exports.comparePW = async (pw, dbpw) => {
     return result;
 };
 
+// TODO: 액세스 토큰 주기 짧게 하고, 리프레시 토큰 주기 길게 하기
 exports.issueToken = async (user_id) => {
     let result = "";
     try {
