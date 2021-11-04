@@ -66,3 +66,13 @@ exports.getNowTimestamp = async () => {
     }
     return result;
 };
+
+exports.getTimestamp = (date) => {
+    let result = "";
+    try {
+        result = moment(date).unix();
+    } catch (e) {
+        result = false;
+    }
+    return result;
+};

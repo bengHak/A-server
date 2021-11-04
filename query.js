@@ -22,9 +22,12 @@ exports.UPDATE_POST = `UPDATE posts SET title = ?, content = ?, updated_at = ? W
 exports.LIKE_POST = `INSERT INTO likes (user_id, post_id, created_at) VALUES (?, ?, ?, ?)`;
 exports.UNLIKE_POST = `DELETE FROM likes WHERE user_id = ? AND post_id = ?`;
 
-exports.INSERT_COMMENT = `INSERT INTO comments (user_id, post_id, content, created_at) VALUES (?, ?, ?, ?)`;
+exports.INSERT_COMMENT = `INSERT INTO comments (user_id, post_id, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?)`;
 exports.UPDATE_COMMENT = `UPDATE comments SET content = ?, updated_at = ? WHERE id = ?`;
 exports.SELECT_COMMENT = `SELECT * FROM comments WHERE id = ?`;
+exports.SELECT_COMMENTS_BY_POST_ID = `SELECT * FROM comments WHERE post_id = ?`;
+exports.SELECT_COMMENT_AND_USER = `SELECT comments.id, comments.user_id, comments.post_id, comments.content, comments.created_at, users.username FROM comments INNER JOIN users ON comments.user_id = users.id WHERE comments.post_id = ?`;
+
 exports.DELETE_COMMENT = `DELETE FROM comments WHERE id = ?`;
 
 exports.admin = {

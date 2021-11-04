@@ -28,14 +28,18 @@ exports.signUpAPI = async (req, res) => {
             if (!b_password || !token) throw e;
             await conn.commit();
             console.log(`${email} signup success`);
-            res.status(200).json({ msg: "signup success", token: token });
+            res.status(200).json({
+                success: true,
+                msg: "signup success",
+                data: token,
+            });
         } else {
-            res.status(400).json({ msg: "duplicated email" });
+            res.status(400).json({ success: false, msg: "duplicated email" });
         }
     } catch (e) {
         await conn.rollback();
         console.log(`signup e : ${e}`);
-        res.status(500).json({ msg: "signup error" });
+        res.status(500).json({ success: false, msg: "signup error" });
     } finally {
         await conn.release();
     }
@@ -52,33 +56,37 @@ exports.signInAPI = async (req, res) => {
 
         let email_check = result[0].length > 0;
         if (!email_check) {
-            res.status(400).json({ msg: "signin failed" });
+            res.status(400).json({ success: false, msg: "signin failed" });
         } else {
             let c_password = await comparePW(givenPassword, password);
             if (!c_password) {
-                res.status(400).json({ msg: "signin failed" });
+                res.status(400).json({ success: false, msg: "signin failed" });
             } else {
                 let token = await issueToken(id);
                 if (!token) throw e;
                 console.log(`${email} signin success`); // 지우기
-                res.status(200).json({ msg: "signin success", token: token });
+                res.status(200).json({
+                    success: true,
+                    msg: "signin success",
+                    data: { id, token },
+                });
             }
         }
     } catch (e) {
         console.log(`signin e : ${e}`);
-        res.status(400).json({ msg: "signin error" });
+        res.status(400).json({ success: false, msg: "signin error" });
     }
 };
 
 exports.verifyTokenAPI = async (req, res) => {
     try {
         if (res.user_id !== undefined) {
-            res.status(200).json({ msg: "verify success" });
+            res.status(200).json({ success: true, msg: "verify success" });
         } else {
-            res.status(400).json({ msg: "verify failed" });
+            res.status(400).json({ success: false, msg: "verify failed" });
         }
     } catch (e) {
         console.log(`verify e : ${e}`);
-        res.status(400).json({ msg: "verify error" });
+        res.status(400).json({ success: false, msg: "verify error" });
     }
 };

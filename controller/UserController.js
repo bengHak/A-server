@@ -64,6 +64,38 @@ exports.getAdminData = async (req, res) => {
     }
 };
 
+exports.getProfileById = async (req, res) => {
+    const conn = await res.pool.getConnection();
+    const { id } = req.params;
+
+    try {
+        const profile = await conn.query(query.SELECT_USER_WITHOUT_PASSWORD, [
+            id,
+        ]);
+        let newProfile = {
+            id: Number(id),
+            username: profile[0][0].username,
+            email: profile[0][0].email,
+            blogTitle: profile[0][0].blog_title,
+            // profileImagePath: profile[0][0].profile_image_path,
+            // blogImagePath: profile[0][0].blog_image_path,
+        };
+        res.json({
+            success: true,
+            msg: "프로필 조회 성공",
+            data: newProfile,
+        });
+    } catch (err) {
+        console.log(err);
+        res.json({
+            success: false,
+            message: "서버 오류",
+        });
+    } finally {
+        conn.release();
+    }
+};
+
 // 프로필 가져오기
 exports.getProfile = async (req, res) => {
     const conn = await res.pool.getConnection();
@@ -75,6 +107,7 @@ exports.getProfile = async (req, res) => {
         ]);
         res.json({
             success: true,
+            msg: "프로필 조회 성공",
             data: profile[0][0],
         });
     } catch (err) {
@@ -82,6 +115,7 @@ exports.getProfile = async (req, res) => {
         res.json({
             success: false,
             message: "서버 오류",
+            data: "",
         });
     } finally {
         conn.release();
